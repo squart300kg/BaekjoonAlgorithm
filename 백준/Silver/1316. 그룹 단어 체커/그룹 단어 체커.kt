@@ -11,24 +11,24 @@ fun main() {
     }
 
     val multiChars = chars.filterValues { it >= 2 }
-    if (chars.filterValues { it >= 2 }.isNotEmpty()) {
-      outter@ for (outterIndex in 0 until multiChars.keys.size) {
-        val char = multiChars.keys.toList()[outterIndex]
-        val firstIndex = word.indexOfFirst { it == char }
-        val lastIndex = word.indexOfLast { it == char }
+    when (multiChars.isNotEmpty()) {
+      false -> groupWordCount++
+      true -> {
+        outter@ for (outterIndex in 0 until multiChars.keys.size) {
+          val char = multiChars.keys.toList()[outterIndex]
+          val firstIndex = word.indexOfFirst { it == char }
+          val lastIndex = word.indexOfLast { it == char }
 
-        if (lastIndex - firstIndex >= 1) {
-          inner@for (innerIndex in firstIndex until lastIndex) {
-            if (word[innerIndex] != word[innerIndex + 1]) break@outter
+          if (lastIndex - firstIndex >= 1) {
+            inner@for (innerIndex in firstIndex until lastIndex) {
+              if (word[innerIndex] != word[innerIndex + 1]) break@outter
+            }
+          }
+          if (outterIndex == multiChars.keys.size - 1) {
+            groupWordCount++
           }
         }
-
-        if (outterIndex == multiChars.keys.size - 1) {
-          groupWordCount++
-        }
       }
-    } else {
-      groupWordCount++
     }
   }
   println(groupWordCount)
